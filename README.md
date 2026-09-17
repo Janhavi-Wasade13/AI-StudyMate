@@ -8,9 +8,9 @@ Students can upload a PDF, ask questions about the uploaded material, generate m
 
 ## 🚀 Live Demo
 
-**Streamlit App:** YOUR_STREAMLIT_APP_URL
+**Streamlit App:** https://ai-studymate-co9yxx5qe6xwyuiu287fop.streamlit.app/
 
-**GitHub Repository:** YOUR_GITHUB_REPOSITORY_URL
+**GitHub Repository:** https://github.com/Janhavi-Wasade13/AI-StudyMate
 
 ---
 
