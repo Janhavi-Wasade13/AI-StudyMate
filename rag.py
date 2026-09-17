@@ -1,11 +1,9 @@
-import os
 import json
 import re
 
 import faiss
 import numpy as np
 
-from dotenv import load_dotenv
 from pypdf import PdfReader
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -18,16 +16,19 @@ from huggingface_hub import InferenceClient
 # ENVIRONMENT
 # ============================================================
 
+import os
+from dotenv import load_dotenv
+
 load_dotenv()
 
-HF_TOKEN = os.getenv("HF_TOKEN")
+try:
+    import streamlit as st
+    HF_TOKEN = st.secrets["HF_TOKEN"]
+except Exception:
+    HF_TOKEN = os.getenv("HF_TOKEN")
 
 if not HF_TOKEN:
-    raise ValueError(
-        "HF_TOKEN not found in .env file."
-    )
-
-
+    raise ValueError("HF_TOKEN not found.")
 # ============================================================
 # HUGGING FACE LLM
 # ============================================================
