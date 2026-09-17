@@ -1,68 +1,49 @@
-# 📚 AI StudyMate
-
-AI StudyMate is an AI-powered study assistant that helps students learn from their own PDF study materials.
-
-Students can upload a PDF, ask questions about the uploaded material, generate multiple-choice questions (MCQs), take a quiz, view their score, and identify topics that need revision.
-
-## 🚀 Live Demo
-
-🔗 **Streamlit App:**  
-https://ai-studymate-co9yxx5qe6xwyuiu287fop.streamlit.app/
-
-## 💡 Problem Statement
-
-Students often spend a lot of time searching through lengthy notes and PDFs to find specific information. Traditional study methods also provide limited feedback about which topics a student needs to revise.
-
-AI StudyMate addresses this problem by allowing students to interact with their study material through an AI-powered question-answering and quiz system.
-
-## 🎯 Solution
-
-AI StudyMate uses Retrieval-Augmented Generation (RAG) to answer questions using information from the student's uploaded PDF.
-
-The application also generates MCQs from the study material and evaluates the student's answers.
-
-Based on incorrect answers, the application provides a weak-topic analysis and revision suggestions.
-
-## ✨ Features
-
-### 📄 PDF Study Material
-- Upload study material in PDF format.
-- Extract text automatically from the PDF.
-- Split the extracted text into smaller chunks.
-
-### 💬 Ask Questions
-- Ask questions about the uploaded study material.
-- Uses semantic search to retrieve relevant information.
-- Generates answers using an AI language model.
-- Answers are grounded in retrieved document content.
-
-### 📝 MCQ Generation
-- Automatically generates multiple-choice questions.
-- Supports 3–10 questions per quiz.
-- Provides four answer options.
-- Provides the correct answer and explanation.
-
-### 🎯 Quiz System
-- Students can attempt generated MCQs.
-- Automatically evaluates answers.
-- Calculates the quiz score.
-- Displays accuracy percentage.
-
-### 🔍 Weak Topic Analysis
-- Identifies questions answered incorrectly.
-- Analyzes the concepts associated with incorrect answers.
-- Provides revision suggestions.
-
-### 📖 Answer Review
-- Shows which questions were answered correctly or incorrectly.
-- Displays the correct answer.
-- Provides explanations for incorrect answers.
-
-## 🧠 How RAG Works
-
-AI StudyMate follows a Retrieval-Augmented Generation pipeline:
-
-```text
+📚 AI StudyMate
+AI-powered study assistant using RAG, semantic retrieval, MCQ generation, and quiz-based weak-area analysis.
+🚀 Live Demo
+Streamlit App: https://ai-studymate-co9yxx5qe6xwyuiu287fop.streamlit.app/
+GitHub Repository: https://github.com/Janhavi-Wasade13/AI-StudyMate
+💡 Problem Statement
+Students often spend a lot of time searching through lengthy study materials and PDF notes to find specific information. Traditional study methods also provide limited feedback about which topics a student needs to revise. AI StudyMate addresses this problem by allowing students to interact directly with their study material and receive AI-powered answers, quizzes, and revision feedback.
+🎯 Solution
+AI StudyMate combines Retrieval-Augmented Generation (RAG) with an interactive quiz system. The student uploads a PDF containing study material. The application extracts and chunks the text, creates embeddings, stores them in a FAISS vector index, retrieves relevant chunks for questions, sends the retrieved context to an LLM, generates answers and MCQs, evaluates quiz performance, and analyzes incorrect answers to identify areas for revision.
+✨ Features
+📄 PDF Study Material
+•	Upload study material in PDF format.
+•	Extract text automatically from the PDF.
+•	Split extracted text into smaller chunks.
+•	Create embeddings for retrieval.
+💬 Ask Questions
+•	Ask questions about the uploaded study material.
+•	Retrieve relevant document chunks using embedding-based similarity search.
+•	Generate an AI-powered answer using the retrieved context.
+🔎 Semantic Retrieval
+•	The system represents document chunks and the user's question as embeddings.
+•	FAISS compares the question vector with document vectors and retrieves the closest chunks.
+•	Because embeddings capture semantic meaning, the system can retrieve related content even when the wording is not identical.
+📝 MCQ Generation
+•	Generate 3–10 multiple-choice questions.
+•	Each question contains four options.
+•	Provide the correct answer and explanation.
+🎯 Interactive Quiz
+•	Attempt generated MCQs inside the application.
+•	Automatically calculate score and accuracy.
+•	Identify correct and incorrect answers.
+🔍 Weak Area Analysis
+•	Analyze incorrectly answered questions.
+•	Identify concepts associated with mistakes.
+•	Provide revision suggestions.
+📖 Answer Review
+•	Review correct and incorrect answers.
+•	Show the correct answer and explanation for incorrect responses.
+🧠 Why Semantic Search?
+AI StudyMate uses embedding-based similarity retrieval rather than simple keyword matching. The reason is that students may ask a question using different words from those used in the PDF. Embeddings convert text into numerical vectors that represent semantic meaning. FAISS then finds document vectors that are close to the question vector.
+Example:
+PDF: "A model performs poorly on previously unseen data."
+Question: "Why does the model fail on new data?"
+The wording is different, but the meaning is related. Embedding-based retrieval can therefore retrieve the relevant chunk. In the current implementation, FAISS uses IndexFlatL2, which measures L2 (Euclidean) distance between vectors. So the project is accurately described as semantic or embedding-based retrieval; it is not simply exact keyword search.
+Important distinction: semantic search is the retrieval approach; FAISS is the vector-search library/index used to perform that retrieval.
+🧠 How RAG Works
 PDF Upload
     ↓
 Text Extraction
@@ -71,119 +52,49 @@ Text Chunking
     ↓
 Text Embeddings
     ↓
-FAISS Vector Database
+FAISS Vector Index
     ↓
 Student Question
     ↓
 Question Embedding
     ↓
-Semantic Similarity Search
+Similarity Search
     ↓
 Relevant Document Chunks
     ↓
-LLM
+Large Language Model
     ↓
 Final Answer
 🔹 What is RAG?
-
-RAG stands for:
-
-Retrieval-Augmented Generation
-
-It combines two main processes:
-
-Retrieval
-
-The system searches the uploaded study material and retrieves the most relevant text chunks.
-
-Generation
-
-The retrieved information is provided as context to the Large Language Model, which generates the final response.
-
-This allows AI StudyMate to answer questions using the student's uploaded study material.
-
+RAG stands for Retrieval-Augmented Generation. It combines retrieval and generation. Retrieval finds relevant information from the uploaded study material. Generation uses an LLM to produce the final response from the retrieved context and the student's question.
 🧩 Chunking
-
-Large documents are divided into smaller pieces called chunks.
-
-AI StudyMate currently uses:
-
+Large documents are divided into smaller pieces called chunks. AI StudyMate currently uses a chunk size of approximately 1000 characters and an overlap of approximately 100 characters.
 chunk_size = 1000
 chunk_overlap = 100
-
-This means each chunk contains approximately 1000 characters, with approximately 100 characters overlapping between consecutive chunks.
-
-The overlap helps preserve context when important information crosses chunk boundaries.
-
+The overlap helps preserve context when information crosses the boundary between two chunks.
 🔢 Embeddings
-
-Embeddings convert text into numerical vectors that represent the semantic meaning of the text.
-
-AI StudyMate uses:
-
+Embeddings convert text into numerical vectors that capture aspects of its semantic meaning. AI StudyMate uses the sentence-transformers/all-MiniLM-L6-v2 embedding model.
 sentence-transformers/all-MiniLM-L6-v2
-
-For example:
-
-"What is overfitting?"
-
-is converted into a numerical vector.
-
-The same process is applied to document chunks.
-
-The vectors can then be compared to find semantically similar content.
-
-🗄️ Vector Database
-
-AI StudyMate uses FAISS for vector similarity search.
-
-FAISS stores the embeddings of the document chunks and allows the application to efficiently search for relevant chunks.
-
-The current retrieval process uses:
-
+🗄️ Vector Database / FAISS
+AI StudyMate uses FAISS to store document vectors and perform similarity search. The current implementation uses FAISS IndexFlatL2. For each user question, the question is embedded and compared against the stored document vectors. The closest results are retrieved.
 Top-K = 3
-
-This means the system retrieves the three most relevant chunks for a question.
-
+Top-K = 3 means the application retrieves the three closest document chunks for the question.
 🤖 Large Language Model
-
-AI StudyMate uses a Large Language Model through the Hugging Face Inference API.
-
-The LLM receives:
-
-Original Question
-        +
-Retrieved Document Context
-
-and generates the final response.
-
-The application instructs the model to use the provided context when answering questions.
-
+AI StudyMate uses a Large Language Model through the Hugging Face Inference API. The LLM receives the original question together with the retrieved document context and generates the final response.
 🛠️ Technology Stack
-Programming Language
-Python
-Frontend
-Streamlit
-PDF Processing
-PyPDF
-Text Processing
-LangChain Text Splitters
-Embeddings
-Hugging Face
-Sentence Transformers
-all-MiniLM-L6-v2
-Vector Database
-FAISS
-LLM
-Hugging Face Inference API
-DeepSeek-V3
-Environment Management
-Python-dotenv
-Deployment
-Streamlit Community Cloud
-Version Control
-Git
-GitHub
+•	Python
+•	Streamlit
+•	PyPDF
+•	LangChain Text Splitters
+•	Hugging Face
+•	Sentence Transformers
+•	all-MiniLM-L6-v2
+•	FAISS
+•	Hugging Face Inference API
+•	DeepSeek-V3
+•	python-dotenv
+•	Streamlit Community Cloud
+•	Git and GitHub
 📂 Project Structure
 AI-StudyMate/
 │
@@ -202,56 +113,20 @@ git clone YOUR_GITHUB_REPOSITORY_URL
 cd AI-StudyMate
 3. Create a Virtual Environment
 python -m venv venv
-4. Activate the Virtual Environment
-Windows
+4. Activate the Virtual Environment — Windows
 venv\Scripts\activate
 5. Install Dependencies
 pip install -r requirements.txt
 🔐 Environment Variables
-
-Create a .env file in the project directory.
-
-Add:
-
+Create a .env file locally and add:
 HF_TOKEN=your_hugging_face_token
-
-The Hugging Face token is required for the LLM API.
-
-Security
-
-API keys and tokens should never be committed to GitHub.
-
-The .gitignore file prevents sensitive files such as .env from being uploaded.
-
-For Streamlit Cloud deployment, the Hugging Face token is stored securely using Streamlit Secrets.
-
+Never commit API keys or tokens to GitHub. The .gitignore file excludes .env. For Streamlit Cloud, the Hugging Face token is stored using Streamlit Secrets.
 ▶️ Run Locally
-
-Start the application using:
-
 streamlit run app.py
-
-The application will open in your browser.
-
 🧪 Testing
-
-The RAG pipeline can be tested using:
-
 python test-rag.py
-
-The test verifies:
-
-PDF text extraction
-Text chunking
-Embedding generation
-FAISS vector database creation
-Semantic retrieval
-AI answer generation
-MCQ generation
+The test verifies PDF text extraction, text chunking, embedding generation, FAISS vector database creation, semantic retrieval, AI answer generation, and MCQ generation.
 📊 Example Workflow
-
-A typical user workflow looks like this:
-
 1. Upload PDF
        ↓
 2. Study material is processed
@@ -272,26 +147,7 @@ A typical user workflow looks like this:
        ↓
 10. Review weak topics
 🎓 Example Use Case
-
-Suppose a student uploads a Machine Learning PDF.
-
-The student asks:
-
-What is overfitting?
-
-AI StudyMate searches the document for relevant information and generates an answer.
-
-The student can then generate MCQs related to the study material.
-
-After completing the quiz, the application might display:
-
-Score: 3/5
-Accuracy: 60%
-
-The system then identifies the topics associated with incorrect answers and provides revision suggestions.
-
-This creates a simple learning loop:
-
+A student uploads a Machine Learning PDF and asks, 'What is overfitting?' The application retrieves relevant content from the document and generates an answer. The student can then generate MCQs, attempt the quiz, view the score and accuracy, and review the concepts associated with incorrect answers.
 Learn
  ↓
 Ask
@@ -304,52 +160,38 @@ Identify Weak Areas
  ↓
 Revise
 🔒 Responsible AI
-
-AI StudyMate uses AI-assisted generation while grounding responses in the uploaded study material.
-
-The system:
-
-Retrieves relevant information from the study material.
-Provides retrieved content as context to the LLM.
-Instructs the model to use the provided context.
-Provides a fallback when information cannot be found.
-Keeps API credentials outside the source code.
-Uses Streamlit Secrets for the deployed application.
-
-AI-generated content should still be reviewed by students, especially when used for important academic decisions.
-
+•	Uses retrieved study-material content as context for question answering.
+•	Instructs the LLM to use the provided context.
+•	Provides a fallback when information cannot be found.
+•	Keeps API credentials outside source code.
+•	Uses Streamlit Secrets for the deployed application.
+•	AI-generated content should still be reviewed by students for important academic decisions.
 🌍 Use Cases
-
-AI StudyMate can be used for:
-
-College exam preparation
-Technical subjects
-Revision from lecture notes
-PDF-based learning
-Self-assessment
-Quick question answering
-MCQ practice
-Identifying topics requiring revision
+•	College exam preparation
+•	Technical subjects
+•	Revision from lecture notes
+•	PDF-based learning
+•	Self-assessment
+•	Quick question answering
+•	MCQ practice
+•	Identifying topics requiring revision
 🔮 Future Improvements
-
-Possible future improvements include:
-
-Multiple PDF support
-Topic-wise progress tracking
-Personalized study plans
-Difficulty-level selection for MCQs
-More advanced retrieval techniques
-Improved learning analytics
-Personalized revision schedules
-Better quiz question diversity
+•	Multiple PDF support
+•	Topic-wise progress tracking
+•	Personalized study plans
+•	Difficulty-level selection for MCQs
+•	More advanced retrieval techniques
+•	Improved learning analytics
+•	Personalized revision schedules
+•	Better quiz question diversity
 👩‍💻 Author
 Janhavi
-
 B.Tech Computer Science and Engineering Student
-
-Areas of Interest
-Machine Learning
-Generative AI
-Retrieval-Augmented Generation
-Data Structures & Algorithms
-Artificial Intelligence
+Areas of Interest:
+•	Machine Learning
+•	Generative AI
+•	Retrieval-Augmented Generation
+•	Data Structures & Algorithms
+•	Artificial Intelligence
+📜 License
+This project is created for educational and hackathon purposes.
